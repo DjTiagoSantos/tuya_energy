@@ -21,7 +21,7 @@ This integration is designed to support Tuya devices in categories like `znjdq`,
 
 ### Manual Installation
 
-1.  Download the latest release from the [GitHub repository](https://github.com/tiagosantos/tuya_energy/releases).
+1.  Download the latest release from the [GitHub repository](https://github.com/DjTiagoSantos/tuya_energy/releases).
 2.  Extract the `tuya_energy` folder from the downloaded ZIP file.
 3.  Copy the `tuya_energy` folder into your Home Assistant's `custom_components` directory.
     Your Home Assistant configuration directory is typically located at `/config`.
