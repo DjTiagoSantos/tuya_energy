@@ -2,8 +2,8 @@
   "domain": "tuya_energy",
   "name": "Tuya Energy",
   "version": "1.0.0",
-  "documentation": "https://github.com/tiagosantos/tuya_energy",
-  "issue_tracker": "https://github.com/tiagosantos/tuya_energy/issues",
+  "documentation": "https://github.com/DjTiagoSantos/tuya_energy",
+  "issue_tracker": "https://github.com/DjTiagoSantos/tuya_energy/issues",
   "dependencies": [],
   "codeowners": [
     "@tiagosantos"
