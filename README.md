@@ -69,7 +69,7 @@ To obtain the Device ID and Local Key, you typically need to use the Tuya IoT Pl
 
 ## Contributing
 
-Contributions are welcome! If you have suggestions, bug reports, or want to contribute code, please open an issue or submit a pull request on the [GitHub repository](https://github.com/tiagosantos/tuya_energy).
+Contributions are welcome! If you have suggestions, bug reports, or want to contribute code, please open an issue or submit a pull request on the [GitHub repository](https://github.com/DjTiagoSantos/tuya_energy).
 
 ## License
 
