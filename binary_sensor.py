@@ -82,11 +82,12 @@ class TuyaEnergyBinarySensor(CoordinatorEntity, BinarySensorEntity):
     @property
     def is_on(self) -> Optional[bool]:
         """Return true if the binary sensor is on."""
-        value = self.coordinator.data.get(self._dp_id)
+        dps = self.coordinator.data.get("dps", {})
+        value = dps.get(self._dp_id)
         if self._dp_id == str(DP_ID_ONLINE_STATE):
             return value == "online"
         elif self._dp_id == str(DP_ID_FAULT):
-            return value != 0 # Fault is a bitmap, 0 means no fault
+            return value is not None and int(value) != 0 # Fault is a bitmap, 0 means no fault
         return None
 
     @property
