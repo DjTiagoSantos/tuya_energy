@@ -78,7 +78,7 @@ async def async_setup_entry(
             f"{coordinator.name} Fault",
             DP_ID_FAULT,
             None,
-            "problem",
+            "alert-circle",
             None,
             entity_category=EntityCategory.DIAGNOSTIC,
         ),
@@ -129,7 +129,8 @@ class TuyaEnergySensor(CoordinatorEntity, SensorEntity):
     @property
     def state(self) -> Any:
         """Return the state of the sensor."""
-        value = self.coordinator.data.get(self._dp_id)
+        dps = self.coordinator.data.get("dps", {})
+        value = dps.get(self._dp_id)
         if value is None:
             return None
         if self._scale:
