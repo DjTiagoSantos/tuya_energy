@@ -87,7 +87,8 @@ class TuyaEnergySelect(CoordinatorEntity, SelectEntity):
     @property
     def current_option(self) -> Optional[str]:
         """Return the current selected option."""
-        return self.coordinator.data.get(self._dp_id)
+        dps = self.coordinator.data.get("dps", {})
+        return dps.get(self._dp_id)
 
     @property
     def options(self) -> list[str]:
