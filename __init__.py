@@ -6,6 +6,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.exceptions import ConfigEntryNotReady
+from homeassistant.const import CONF_NAME
 
 from .const import (
     DOMAIN,
@@ -16,6 +17,7 @@ from .const import (
     CONF_LOCAL_KEY,
     CONF_IP_ADDRESS,
     CONF_PROTOCOL_VERSION,
+    DP_ID_POWER,
 )
 from .protocol import TuyaDeviceProtocol
 
@@ -43,13 +45,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
     hass.data[DOMAIN][entry.entry_id] = coordinator
 
-    for platform in PLATFORMS:
-        try:
-            hass.async_create_task(
-                hass.config_entries.async_forward_entry_setup(entry, platform)
-            )
-        except Exception as e:
-            _LOGGER.error("Error setting up platform %s for %s: %s", platform, entry.entry_id, e)
+    # async_forward_entry_setup foi removido no HA 2025.6; usar a versão
+    # plural, que carrega todas as plataformas de uma vez e já é awaitable.
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     return True
 
@@ -93,9 +91,10 @@ class TuyaEnergyDataUpdateCoordinator(DataUpdateCoordinator):
                 raise UpdateFailed("Failed to get status from device.")
             
             # Implement intelligent polling: if power consumption is detected, switch to fast polling
-            # This is a placeholder, actual implementation will depend on DP mapping
-            current_power = status.get(str(DP_ID_POWER))
-            if current_power is not None and current_power > 0:
+            dps = status.get("dps", {})
+            current_power = dps.get(str(DP_ID_POWER))
+            
+            if current_power is not None and float(current_power) > 0:
                 if self.update_interval.seconds != FAST_SCAN_INTERVAL:
                     _LOGGER.debug("Device %s is consuming power, switching to fast polling (%s s)", self.device_id, FAST_SCAN_INTERVAL)
                     self.update_interval = timedelta(seconds=FAST_SCAN_INTERVAL)
