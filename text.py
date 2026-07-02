@@ -71,7 +71,8 @@ class TuyaEnergyText(CoordinatorEntity, TextEntity):
     @property
     def native_value(self) -> Optional[str]:
         """Return the current value."""
-        return self.coordinator.data.get(self._dp_id)
+        dps = self.coordinator.data.get("dps", {})
+        return dps.get(self._dp_id)
 
     async def async_set_value(self, value: str) -> None:
         """Set new value."""
