@@ -83,33 +83,34 @@ class TuyaEnergyNumber(CoordinatorEntity, NumberEntity):
         return self._name
 
     @property
-    def value(self) -> Optional[float]:
+    def native_value(self) -> Optional[float]:
         """Return the current value."""
-        value = self.coordinator.data.get(self._dp_id)
+        dps = self.coordinator.data.get("dps", {})
+        value = dps.get(self._dp_id)
         return float(value) if value is not None else None
 
-    async def async_set_value(self, value: float) -> None:
+    async def async_set_native_value(self, value: float) -> None:
         """Set new value."""
         await self.coordinator.protocol.async_set_dp(self._dp_id, int(value))
         await self.coordinator.async_refresh()
 
     @property
-    def min_value(self) -> float:
+    def native_min_value(self) -> float:
         """Return the minimum value."""
         return self._min_value
 
     @property
-    def max_value(self) -> float:
+    def native_max_value(self) -> float:
         """Return the maximum value."""
         return self._max_value
 
     @property
-    def step(self) -> float:
+    def native_step(self) -> float:
         """Return the step value."""
         return self._step
 
     @property
-    def unit_of_measurement(self) -> Optional[str]:
+    def native_unit_of_measurement(self) -> Optional[str]:
         """Return the unit of measurement."""
         return self._unit_of_measurement
 
