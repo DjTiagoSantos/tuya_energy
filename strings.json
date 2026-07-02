@@ -3,6 +3,7 @@
     "step": {
       "user": {
         "data": {
+          "name": "Nome",
           "ip_address": "Endereço IP",
           "device_id": "ID do Dispositivo",
           "local_key": "Chave Local",
@@ -10,6 +11,16 @@
         },
         "description": "Insira as informações do seu dispositivo Tuya Energy.",
         "title": "Configurar Dispositivo Tuya Energy"
+      },
+      "reauth_confirm": {
+        "data": {
+          "ip_address": "Endereço IP",
+          "device_id": "ID do Dispositivo",
+          "local_key": "Chave Local",
+          "protocol_version": "Versão do Protocolo (3.3 ou 3.5)"
+        },
+        "description": "A conexão com o dispositivo falhou. Atualize a Chave Local (e outros dados, se necessário).",
+        "title": "Reautenticar Dispositivo Tuya Energy"
       }
     },
     "error": {
@@ -18,7 +29,8 @@
       "unknown": "Erro inesperado"
     },
     "abort": {
-      "already_configured": "O dispositivo Tuya Energy já está configurado."
+      "already_configured": "O dispositivo Tuya Energy já está configurado.",
+      "reauth_successful": "Reautenticação concluída com sucesso."
     }
   },
   "options": {
