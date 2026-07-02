@@ -1,1 +1,73 @@
+{
+  "title": "Tuya Energy",
 
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure Tuya Energy",
+        "description": "Enter your Tuya device information.",
+        "data": {
+          "host": "Device IP Address",
+          "device_id": "Device ID",
+          "local_key": "Local Key",
+          "protocol_version": "Protocol Version",
+          "scan_interval": "Update interval (seconds)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the device.",
+      "invalid_auth": "Invalid Local Key or Device ID.",
+      "unknown": "Unexpected error."
+    },
+    "abort": {
+      "already_configured": "This device is already configured."
+    }
+  },
+
+  "options": {
+    "step": {
+      "init": {
+        "title": "Tuya Energy Options",
+        "data": {
+          "scan_interval": "Update interval (seconds)"
+        }
+      }
+    }
+  },
+
+  "entity": {
+    "sensor": {
+      "voltage": {
+        "name": "Voltage"
+      },
+      "current": {
+        "name": "Current"
+      },
+      "power": {
+        "name": "Power"
+      },
+      "energy": {
+        "name": "Energy"
+      },
+      "frequency": {
+        "name": "Frequency"
+      },
+      "power_factor": {
+        "name": "Power Factor"
+      }
+    },
+
+    "binary_sensor": {
+      "online": {
+        "name": "Online"
+      }
+    },
+
+    "switch": {
+      "relay": {
+        "name": "Relay"
+      }
+    }
+  }
+}
