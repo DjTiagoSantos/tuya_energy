@@ -23,7 +23,13 @@ class TuyaDeviceProtocol:
         self._is_connected = False
 
     async def async_connect(self):
-        """Connects to the Tuya device."""
+        """Creates the tinytuya device object and verifies it's reachable.
+
+        tinytuya has no explicit connect() call — the socket is opened
+        lazily on the first status()/set_dps() request. We do a real
+        status() call here just to confirm the device answers before we
+        report the connection as successful.
+        """
         if self._device:
             await self.async_disconnect()
 
@@ -31,16 +37,25 @@ class TuyaDeviceProtocol:
             self._device = tinytuya.OutletDevice(
                 self._device_id,
                 self._ip_address,
-                self._local_key
+                self._local_key,
+                version=self._protocol_version,
             )
-            self._device.set_version(self._protocol_version)
+            # Keep the socket open between polls; tinytuya reconnects
+            # transparently if the session drops.
+            self._device.set_socketPersistent(True)
         except Exception as e:
             _LOGGER.error("Error initializing Tuya device object for %s: %s", self._device_id, e)
             return False
 
         try:
-            # TinyTuya's connect is synchronous, run in executor
-            await self.hass.async_add_executor_job(self._device.connect)
+            status = await self.hass.async_add_executor_job(self._device.status)
+            if isinstance(status, dict) and status.get("Error"):
+                _LOGGER.error(
+                    "Failed to connect to Tuya device %s: %s",
+                    self._device_id, status.get("Error"),
+                )
+                self._is_connected = False
+                return False
             self._is_connected = True
             _LOGGER.debug("Successfully connected to Tuya device %s", self._device_id)
             return True
@@ -66,6 +81,14 @@ class TuyaDeviceProtocol:
                 return None
         try:
             status = await self.hass.async_add_executor_job(self._device.status)
+            if isinstance(status, dict) and status.get("Error"):
+                # tinytuya nem sempre lança exceção em erro de comunicação;
+                # às vezes devolve um payload tipo {"Error": ..., "Err": ...}.
+                _LOGGER.error(
+                    "Device %s returned an error status: %s", self._device_id, status
+                )
+                self._is_connected = False
+                return None
             _LOGGER.debug("Status for %s: %s", self._device_id, status)
             return status
         except Exception as e:
@@ -80,7 +103,16 @@ class TuyaDeviceProtocol:
                 return False
         try:
             # TinyTuya's set_version and set_status are synchronous
-            await self.hass.async_add_executor_job(self._device.set_dps, {dp_id: value})
+            result = await self.hass.async_add_executor_job(
+                self._device.set_dps, {dp_id: value}
+            )
+            if isinstance(result, dict) and result.get("Error"):
+                _LOGGER.error(
+                    "Device %s rejected DP %s=%s: %s",
+                    self._device_id, dp_id, value, result,
+                )
+                self._is_connected = False
+                return False
             _LOGGER.debug("Set DP %s to %s for device %s", dp_id, value, self._device_id)
             return True
         except Exception as e:
