@@ -32,7 +32,7 @@ async def async_setup_entry(
         TuyaEnergySelect(
             coordinator,
             config_entry.entry_id,
-            f"{coordinator.name} Relay Status",
+            f"{coordinator.device_name} Relay Status",
             DP_ID_RELAY_STATUS,
             RELAY_STATUS_OPTIONS,
             "toggle-switch",
@@ -41,7 +41,7 @@ async def async_setup_entry(
         TuyaEnergySelect(
             coordinator,
             config_entry.entry_id,
-            f"{coordinator.name} Light Mode",
+            f"{coordinator.device_name} Light Mode",
             DP_ID_LIGHT_MODE,
             LIGHT_MODE_OPTIONS,
             "lightbulb-on",
@@ -115,7 +115,7 @@ class TuyaEnergySelect(CoordinatorEntity, SelectEntity):
         """Return device information for the select entity."""
         return {
             "identifiers": {(DOMAIN, self.coordinator.device_id)},
-            "name": self.coordinator.name,
+            "name": self.coordinator.device_name,
             "manufacturer": "Tuya",
             "model": "Energy Breaker",  # This can be made dynamic later
             "via_device": (DOMAIN, self.coordinator.device_id),
