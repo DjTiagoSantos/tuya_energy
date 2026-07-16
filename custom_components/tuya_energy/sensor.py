@@ -37,7 +37,7 @@ async def async_setup_entry(
         TuyaEnergySensor(
             coordinator,
             config_entry.entry_id,
-            f"{coordinator.name} Voltage",
+            f"{coordinator.device_name} Voltage",
             DP_ID_VOLTAGE,
             "V",
             "voltage",
@@ -46,7 +46,7 @@ async def async_setup_entry(
         TuyaEnergySensor(
             coordinator,
             config_entry.entry_id,
-            f"{coordinator.name} Current",
+            f"{coordinator.device_name} Current",
             DP_ID_CURRENT,
             "A",
             "current",
@@ -55,7 +55,7 @@ async def async_setup_entry(
         TuyaEnergySensor(
             coordinator,
             config_entry.entry_id,
-            f"{coordinator.name} Power",
+            f"{coordinator.device_name} Power",
             DP_ID_POWER,
             "W",
             "power",
@@ -64,7 +64,7 @@ async def async_setup_entry(
         TuyaEnergySensor(
             coordinator,
             config_entry.entry_id,
-            f"{coordinator.name} Energy",
+            f"{coordinator.device_name} Energy",
             DP_ID_ENERGY,
             "kWh",
             "energy",
@@ -75,7 +75,7 @@ async def async_setup_entry(
         TuyaEnergySensor(
             coordinator,
             config_entry.entry_id,
-            f"{coordinator.name} Fault",
+            f"{coordinator.device_name} Fault",
             DP_ID_FAULT,
             None,
             "alert-circle",
@@ -167,7 +167,7 @@ class TuyaEnergySensor(CoordinatorEntity, SensorEntity):
         """Return device information for the sensor."""
         return {
             "identifiers": {(DOMAIN, self.coordinator.device_id)},
-            "name": self.coordinator.name,
+            "name": self.coordinator.device_name,
             "manufacturer": "Tuya",
             "model": "Energy Breaker", # This can be made dynamic later
             "via_device": (DOMAIN, self.coordinator.device_id),
