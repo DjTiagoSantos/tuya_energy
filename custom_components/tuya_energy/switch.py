@@ -29,14 +29,14 @@ async def async_setup_entry(
         TuyaEnergySwitch(
             coordinator,
             config_entry.entry_id,
-            f"{coordinator.name} Power",
+            f"{coordinator.device_name} Power",
             DP_ID_SWITCH,
             "power",
         ),
         TuyaEnergySwitch(
             coordinator,
             config_entry.entry_id,
-            f"{coordinator.name} Child Lock",
+            f"{coordinator.device_name} Child Lock",
             DP_ID_CHILD_LOCK,
             "lock",
             entity_category=EntityCategory.CONFIG,
@@ -106,7 +106,7 @@ class TuyaEnergySwitch(CoordinatorEntity, SwitchEntity):
         """Return device information for the switch."""
         return {
             "identifiers": {(DOMAIN, self.coordinator.device_id)},
-            "name": self.coordinator.name,
+            "name": self.coordinator.device_name,
             "manufacturer": "Tuya",
             "model": "Energy Breaker",  # This can be made dynamic later
             "via_device": (DOMAIN, self.coordinator.device_id),
