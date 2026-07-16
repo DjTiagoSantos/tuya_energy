@@ -28,7 +28,7 @@ async def async_setup_entry(
         TuyaEnergyText(
             coordinator,
             config_entry.entry_id,
-            f"{coordinator.name} Cycle Time",
+            f"{coordinator.device_name} Cycle Time",
             DP_ID_CYCLE_TIME,
             "clock-outline",
             entity_category=EntityCategory.CONFIG,
@@ -94,7 +94,7 @@ class TuyaEnergyText(CoordinatorEntity, TextEntity):
         """Return device information for the text entity."""
         return {
             "identifiers": {(DOMAIN, self.coordinator.device_id)},
-            "name": self.coordinator.name,
+            "name": self.coordinator.device_name,
             "manufacturer": "Tuya",
             "model": "Energy Breaker",  # This can be made dynamic later
             "via_device": (DOMAIN, self.coordinator.device_id),
