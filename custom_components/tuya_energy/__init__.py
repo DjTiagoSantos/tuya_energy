@@ -73,13 +73,20 @@ class TuyaEnergyDataUpdateCoordinator(DataUpdateCoordinator):
         """Initialize."""
         self.protocol = protocol
         self.device_id = entry.data[CONF_DEVICE_ID]
-        self.name = entry.data[CONF_NAME]
+        # NOTE: "name" is a reserved attribute on DataUpdateCoordinator (it's
+        # set internally by DataUpdateCoordinator.__init__ below and is used
+        # for its internal logger name). Storing the user-facing device name
+        # in self.name gets silently overwritten by super().__init__(), which
+        # caused every device to end up named after DOMAIN ("tuya_energy")
+        # regardless of what the user typed in the config flow. Use a
+        # dedicated attribute instead so it survives the base class init.
+        self.device_name = entry.data.get(CONF_NAME) or entry.title or DEFAULT_NAME
         self.scan_interval = timedelta(seconds=entry.options.get("scan_interval", DEFAULT_SCAN_INTERVAL))
 
         super().__init__(
             hass,
             _LOGGER,
-            name=DOMAIN,
+            name=f"{DOMAIN}_{entry.entry_id}",
             update_interval=self.scan_interval,
         )
 
@@ -106,4 +113,3 @@ class TuyaEnergyDataUpdateCoordinator(DataUpdateCoordinator):
             return status
         except Exception as err:
             raise UpdateFailed(f"Error communicating with device {self.device_id}: {err}")
-
