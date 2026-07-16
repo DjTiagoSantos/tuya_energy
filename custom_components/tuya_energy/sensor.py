@@ -40,8 +40,10 @@ async def async_setup_entry(
             f"{coordinator.device_name} Voltage",
             DP_ID_VOLTAGE,
             "V",
-            "voltage",
+            None,  # sem icone manual: o device_class "voltage" ja da o icone certo
             VOLTAGE_SCALE,
+            device_class="voltage",
+            state_class="measurement",
         ),
         TuyaEnergySensor(
             coordinator,
@@ -49,8 +51,10 @@ async def async_setup_entry(
             f"{coordinator.device_name} Current",
             DP_ID_CURRENT,
             "A",
-            "current",
+            None,  # sem icone manual: o device_class "current" ja da o icone certo
             CURRENT_SCALE,
+            device_class="current",
+            state_class="measurement",
         ),
         TuyaEnergySensor(
             coordinator,
@@ -58,8 +62,10 @@ async def async_setup_entry(
             f"{coordinator.device_name} Power",
             DP_ID_POWER,
             "W",
-            "power",
+            None,  # sem icone manual: o device_class "power" ja da o icone certo
             POWER_SCALE,
+            device_class="power",
+            state_class="measurement",
         ),
         TuyaEnergySensor(
             coordinator,
