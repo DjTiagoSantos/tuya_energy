@@ -29,7 +29,7 @@ async def async_setup_entry(
         TuyaEnergyNumber(
             coordinator,
             config_entry.entry_id,
-            f"{coordinator.name} Countdown",
+            f"{coordinator.device_name} Countdown",
             DP_ID_COUNTDOWN,
             0, # Min value
             86400, # Max value (24 hours in seconds)
@@ -129,7 +129,7 @@ class TuyaEnergyNumber(CoordinatorEntity, NumberEntity):
         """Return device information for the number entity."""
         return {
             "identifiers": {(DOMAIN, self.coordinator.device_id)},
-            "name": self.coordinator.name,
+            "name": self.coordinator.device_name,
             "manufacturer": "Tuya",
             "model": "Energy Breaker",  # This can be made dynamic later
             "via_device": (DOMAIN, self.coordinator.device_id),
