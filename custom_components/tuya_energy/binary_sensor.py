@@ -29,7 +29,7 @@ async def async_setup_entry(
         TuyaEnergyBinarySensor(
             coordinator,
             config_entry.entry_id,
-            f"{coordinator.name} Online",
+            f"{coordinator.device_name} Online",
             DP_ID_ONLINE_STATE,
             "connectivity",
             device_class="connectivity",
@@ -37,7 +37,7 @@ async def async_setup_entry(
         TuyaEnergyBinarySensor(
             coordinator,
             config_entry.entry_id,
-            f"{coordinator.name} Fault",
+            f"{coordinator.device_name} Fault",
             DP_ID_FAULT,
             "alert",
             device_class="problem",
@@ -110,7 +110,7 @@ class TuyaEnergyBinarySensor(CoordinatorEntity, BinarySensorEntity):
         """Return device information for the binary sensor."""
         return {
             "identifiers": {(DOMAIN, self.coordinator.device_id)},
-            "name": self.coordinator.name,
+            "name": self.coordinator.device_name,
             "manufacturer": "Tuya",
             "model": "Energy Breaker",  # This can be made dynamic later
             "via_device": (DOMAIN, self.coordinator.device_id),
