@@ -102,9 +102,14 @@ class TuyaDeviceProtocol:
             if not await self.async_connect():
                 return False
         try:
-            # TinyTuya's set_version and set_status are synchronous
+            # NOTE: tinytuya nao tem um metodo chamado "set_dps". O metodo
+            # correto para setar um unico DP e "set_value(index, value)"
+            # (confirmado no PROTOCOL.md oficial do projeto). Chamar um
+            # metodo inexistente gerava um AttributeError que caia
+            # silenciosamente no except abaixo -- o comando nunca chegava
+            # ao dispositivo, mas o erro so aparecia no log de debug/error.
             result = await self.hass.async_add_executor_job(
-                self._device.set_dps, {dp_id: value}
+                self._device.set_value, int(dp_id), value
             )
             if isinstance(result, dict) and result.get("Error"):
                 _LOGGER.error(
